@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   backend:
     build: ./backend
@@ -6,11 +5,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/bookdb
-      - SPRING_DATASOURCE_USERNAME=bookuser
-      - SPRING_DATASOURCE_PASSWORD=bookpass
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_PROFILES_ACTIVE=docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bookdb
+      SPRING_DATASOURCE_USERNAME: bookuser
+      SPRING_DATASOURCE_PASSWORD: bookpass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       - db
 

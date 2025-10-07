@@ -15,13 +15,13 @@ import java.util.Date;
 public class JwtService {
 
     private final SecretKey key;
+    private final long jwtExpirationMs;
 
-    public JwtService(@Value("${jwt.secret}") String secret) {
+    public JwtService(@Value("${jwt.secret}") String secret,
+                      @Value("${jwt.expiration}") long jwtExpirationMs) {
         this.key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
+        this.jwtExpirationMs = jwtExpirationMs;
     }
-
-    @Value("${jwt.expiration}")
-    private long jwtExpirationMs;
 
     public String generateToken(UserDetails user) {
         return Jwts.builder()
