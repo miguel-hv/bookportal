@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      target: dev
+    volumes:
+      - ./backend:/app
+      - ~/.m2:/root/.m2
+    command: ["./mvnw", "spring-boot:run"]
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
