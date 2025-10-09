@@ -1,4 +1,8 @@
 # Makefile
+#view logs: docker compose logs
+#frontend logs tail: docker compose logs -f frontend
+#open backend shell inside container: docker compose exec backend /bin/bash
+#open frontend shell inside container: docker compose exec frontend sh
 .PHONY: up down prod
 
 # Default target
