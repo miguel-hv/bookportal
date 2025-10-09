@@ -16,6 +16,7 @@ import com.bookportal.backend.repository.UserRepository;
 import com.bookportal.backend.service.JwtService;
 
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -42,10 +43,10 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Username already exists");
         }
 
-        // encode the password
         var user = new UserEntity();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(Set.of("ROLE_USER"));
 
         userRepository.save(user);
 

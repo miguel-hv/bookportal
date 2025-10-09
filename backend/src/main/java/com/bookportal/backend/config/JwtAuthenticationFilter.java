@@ -38,8 +38,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String username;
 
-        System.out.println("Authorization header: " + authHeader);
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -47,35 +45,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
         username = jwtService.extractUsername(jwt);
-        System.out.println("Extracted JWT: " + jwt);
-        System.out.println("Username from JWT: " + username);
-
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            boolean valid = jwtService.isTokenValid(jwt, userDetails);
-            System.out.println("JWT valid? " + valid);
-
-            if (valid) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, List.of());
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                var authCheck = SecurityContextHolder.getContext().getAuthentication();
-                System.out.println("Now authenticated: " + authCheck.getName());
-            }
-
-            var auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null) {
-                System.out.println("Authenticated user: " + auth.getName() + ", authorities: " + auth.getAuthorities());
-            } else {
-                System.out.println("No authenticated user in SecurityContext yet");
-            }
-
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, List.of(() -> "ROLE_USER"));
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
