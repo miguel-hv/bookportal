@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchUsers } from '@/users/UserService';
+import { fetchUsers } from '@/users/userService';
 import { User } from '@/users/UserModel';
 
 export default function UsersPage() {

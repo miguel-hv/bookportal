@@ -1,0 +1,14 @@
+'use client';
+import LoginForm from '@/auth/components/LoginForm';
+import { loginUser } from '@/users/authService';
+import { useRouter } from 'next/navigation';
+
+export default function LoginPage() {
+  const router = useRouter();
+  const handleLogin = async (data: { name: string; password: string }) => {
+    await loginUser(data);
+    router.push('/');
+  };
+
+  return <LoginForm onSubmit={handleLogin} />;
+}

@@ -1,3 +1,5 @@
+import { User } from "./UserModel"
+
 export async function fetchUsers() {
   // const res = await fetch('/api/users', {
   //   method: 'GET',
@@ -9,11 +11,13 @@ export async function fetchUsers() {
   // }
 
   // return res.json();
-  return [
-    {
+  const user: User = {
       id: 1,
       name: 'miguel',
-      role: 'admin'
+      role: 'ADMIN'
     }
+
+  return [
+    user
   ]
 }
