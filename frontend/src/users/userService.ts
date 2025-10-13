@@ -13,7 +13,7 @@ export async function fetchUsers() {
   // return res.json();
   const user: User = {
       id: 1,
-      name: 'miguel',
+      username: 'miguel',
       role: 'ADMIN'
     }
 

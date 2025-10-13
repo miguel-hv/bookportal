@@ -3,17 +3,17 @@ export type UserRole = 'USER' | 'ADMIN';
 
 export type User = {
   id: number;
-  name: string;
+  username: string;
   role: UserRole;
 };
 
 export type RegisterUserRequest = {
-  name: string;
+  username: string;
   password: string;
   role: UserRole;
 };
 
 export type LoginUserRequest = {
-  name: string;
+  username: string;
   password: string;
 };

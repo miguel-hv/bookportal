@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
-  const handleLogin = async (data: { name: string; password: string }) => {
+  const handleLogin = async (data: { username: string; password: string }) => {
     await loginUser(data);
     router.push('/');
   };

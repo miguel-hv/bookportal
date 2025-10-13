@@ -9,7 +9,7 @@ type LoginFormProps = {
 };
 
 export default function LoginForm({ onSubmit }: LoginFormProps) {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
     setLoading(true);
 
     try {
-      await onSubmit({ name, password });
+      await onSubmit({ username, password });
     } catch (err: any) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -32,7 +32,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
     <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto mt-10 p-6 border rounded-2xl shadow-md bg-white">
       <h1 className="text-xl font-semibold mb-4 text-center">Login</h1>
 
-      <InputField label="Name" value={name} onChange={setName} required />
+      <InputField label="Name" value={username} onChange={setUsername} required />
       <InputField label="Password" type="password" value={password} onChange={setPassword} required />
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
