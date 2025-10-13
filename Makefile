@@ -16,3 +16,11 @@ down:
 # Production build
 prod:
 	docker compose up --build
+
+# Run backend locally without Docker
+backend-local:
+	cd backend && ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+
+# Run frontend locally without Docker
+frontend-local:
+	cd frontend && npm run dev
