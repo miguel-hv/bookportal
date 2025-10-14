@@ -1,6 +1,6 @@
 # Bookportal app
 
-Created in order to learn in depth how to manage projects with NextJs, Java and Docker.
+Created in order to learn Java (with Spring Boot and Postgre database), Docker and Nextjs.
 
 ## App description
 
@@ -14,3 +14,15 @@ The goal is to create a portal where users can register and post book recommenda
 
 ### Security
 jwt authentication with two auth levels: user and admin.
+
+## Run the app
+A makefile was created to run the app in local. 
+- run the docker container app in development: 
+```
+make up  
+```
+- build the docker container app: 
+```
+make prod  
+```
+The app can be run in local without containers, starting the backend in localhost:8080 and the frontend in localhost:3000

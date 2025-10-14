@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import InputField from './InputField';
-import { LoginUserRequest } from '@/users/UserModel';
+import { LoginUserRequest } from '@/user/UserModel';
 
 type LoginFormProps = {
   onSubmit: (data: LoginUserRequest) => Promise<void>;

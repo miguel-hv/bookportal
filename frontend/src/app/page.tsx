@@ -1,9 +1,7 @@
+import UserList from "@/user/components/UserList";
 
 export default function Home() {
   return (
-    <div>
-      my book portal
-      <p>testing hot reload</p>
-    </div>
+    <UserList />
   );
 }
