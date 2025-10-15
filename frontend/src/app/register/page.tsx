@@ -2,11 +2,11 @@
 import RegisterForm from '@/auth/components/RegisterForm';
 import { registerUser } from '@/auth/authService';
 import { useRouter } from 'next/navigation';
-import { UserRole } from '@/user/UserModel';
+import { RegisterUserRequest, UserRole } from '@/user/UserModel';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const handleRegister = async (data: { username: string; password: string, role: UserRole }) => {
+  const handleRegister = async (data: RegisterUserRequest) => {
     await registerUser(data);
     router.push('/login');
   };
