@@ -1,9 +1,11 @@
 package com.bookportal.backend.controller;
 
 
+import com.bookportal.backend.dto.MessageResponse;
 import com.bookportal.backend.entity.UserEntity;
 import com.bookportal.backend.model.LoginRequest;
 import com.bookportal.backend.model.RegisterRequest;
+import com.bookportal.backend.util.ErrorMessages;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +42,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.badRequest().body("Username already exists");
+            return ResponseEntity.badRequest().body(new MessageResponse(ErrorMessages.USERNAME_EXISTS.getMessage()));
         }
 
         var user = new UserEntity();
@@ -50,7 +52,7 @@ public class AuthController {
 
         userRepository.save(user);
 
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok(new MessageResponse(ErrorMessages.USER_REGISTERED.getMessage()));
     }
 
     @PostMapping("/login")
