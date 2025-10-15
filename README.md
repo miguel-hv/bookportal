@@ -13,7 +13,7 @@ The goal is to create a portal where users can register and post book recommenda
 ## Technical aspects
 
 ### Security
-jwt authentication with two auth levels: user and admin.
+jwt authentication with two authorization levels: user and admin.
 
 ## Run the app
 A makefile was created to run the app in local. 
@@ -26,3 +26,9 @@ make up
 make prod  
 ```
 The app can be run in local without containers, starting the backend in localhost:8080 and the frontend in localhost:3000
+
+## IA assistant
+Generate folder structure json with this command (Linux):
+```
+tree -J -I 'node_modules|.next|.git' > project-structure.json
+```
