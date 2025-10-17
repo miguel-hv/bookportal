@@ -15,6 +15,9 @@ The goal is to create a portal where users can register and post book recommenda
 ### Security
 jwt authentication with two authorization levels: user and admin.
 
+### Database access
+Using Hibernate/JPA. QueryDSL can be used to mimic the LINQ deferred query representation used in C# to prevent N+1 issues. 
+
 ## Run the app
 A makefile was created to run the app in local. 
 - run the docker container app in development: 
