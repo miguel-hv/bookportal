@@ -5,6 +5,8 @@ public enum ErrorMessages {
     USER_REGISTERED("User registered successfully"),
     INVALID_CREDENTIALS("Invalid username or password"),
     INVALID_REFRESH_TOKEN("Invalid or expired refresh token"),
+    MISSING_REFRESH_TOKEN("Missing refresh token"),
+    UNAUTHORIZED("Unauthorized"),
     JWT_EXPIRED("JWT expired"),
     INVALID_JWT("Invalid JWT"),
     UNEXPECTED_ERROR("An unexpected error occurred.");

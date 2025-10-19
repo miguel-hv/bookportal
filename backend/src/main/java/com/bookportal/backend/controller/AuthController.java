@@ -16,12 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.bookportal.backend.repository.UserRepository;
 import com.bookportal.backend.service.JwtService;
+
 
 import java.util.Map;
 import java.util.Set;
@@ -90,15 +88,25 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
-        String requestToken = request.get("refreshToken");
+    public ResponseEntity<?> refreshToken(
+            @RequestBody Map<String, String> request
+    ) {
+        String refreshToken = request.get("refreshToken");
 
-        return refreshTokenRepository.findByToken(requestToken)
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            throw new AuthException(ErrorMessages.MISSING_REFRESH_TOKEN.getMessage());
+        }
+
+        return refreshTokenRepository.findByToken(refreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshTokenEntity::getUser)
                 .map(user -> {
-                    String token = jwtService.generateToken(user);
-                    return ResponseEntity.ok(Map.of("refreshToken", token));
+                    String newAccessToken = jwtService.generateToken(user);
+                    RefreshTokenEntity newRefreshToken = refreshTokenService.createRefreshToken(user);
+                    return ResponseEntity.ok((Map.of(
+                            "token", newAccessToken,
+                            "refreshToken", newRefreshToken.getToken()
+                    )));
                 })
                 .orElseThrow(() -> new AuthException(ErrorMessages.INVALID_REFRESH_TOKEN.getMessage()));
     }
