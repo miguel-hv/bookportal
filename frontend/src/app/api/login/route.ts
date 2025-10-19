@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   const { username, password } = await req.json();
 
-  // Call your backend auth service
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -19,7 +18,7 @@ export async function POST(req: Request) {
   }
 
   const data = await res.json();
-  const token = data.token;
+  const { token, refreshToken} = data;
 
   // Set token in secure HttpOnly cookie
   const response = NextResponse.json({ success: true });
@@ -30,8 +29,21 @@ export async function POST(req: Request) {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: 60 * 60 * 24, // 1 day
+    maxAge: 60 * 15, // 15 minutes
   });
+
+  // Long-lived refresh token
+  response.cookies.set({
+    name: 'refresh_token',
+    value: refreshToken,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  });
+
+  console.log("✅ Set login refresh token:", refreshToken);
 
   return response;
 }
