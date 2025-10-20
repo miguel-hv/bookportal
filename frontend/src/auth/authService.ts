@@ -1,6 +1,6 @@
 import { LoginUserRequest, RegisterUserRequest, User } from "../user/UserModel"
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth`;
+const BASE_URL = `${process.env.PUBLIC_API_BASE_URL}/auth`;
 
 export async function registerUser(data: RegisterUserRequest): Promise<User> {
   const res = await fetch(`${BASE_URL}/register`, {

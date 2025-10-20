@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         );
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh`, {
+        const res = await fetch(`${process.env.PUBLIC_API_BASE_URL}/auth/refresh`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ refreshToken }),

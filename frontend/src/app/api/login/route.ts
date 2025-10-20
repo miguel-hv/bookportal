@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 
+const BACKEND_URL = process.env.PUBLIC_API_BASE_URL;
+
 export async function POST(req: Request) {
   const { username, password } = await req.json();
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+  const res = await fetch(`${BACKEND_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
