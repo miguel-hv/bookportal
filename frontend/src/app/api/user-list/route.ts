@@ -1,11 +1,15 @@
-import { fetchFromBackend } from "@/lib/fetchBackend";
+import { fetchBackend } from "@/lib/fetchBackend";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_API_URL = process.env.PUBLIC_API_BASE_URL;
-
 export async function GET(req: NextRequest) {
+  const cookieStore = await cookies();
+    console.log("cookie keys in BFF route:", cookieStore.getAll().map(c => c.name));
+
      try {
-    const res = await fetchFromBackend("/user/user-list", { method: "GET" });
+    console.log(" llamada bff");
+
+    const res = await fetchBackend("/user/user-list", { method: "GET" });
 
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

@@ -1,9 +1,7 @@
 import { LoginUserRequest, RegisterUserRequest, User } from "../user/UserModel"
 
-const BASE_URL = `${process.env.PUBLIC_API_BASE_URL}/auth`;
-
 export async function registerUser(data: RegisterUserRequest): Promise<User> {
-  const res = await fetch(`${BASE_URL}/register`, {
+  const res = await fetch('api/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -33,5 +31,5 @@ export async function loginUser(data: LoginUserRequest): Promise<User> {
 }
 
 export async function logoutUser() {
-  await fetch('/api/logout', { method: 'POST' });
+  await fetch('api/logout', { method: 'POST' });
 }
