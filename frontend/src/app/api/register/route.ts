@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data, { status: res.status });
   } catch (err) {
-    console.error("BFF /api/register error:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

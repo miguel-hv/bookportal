@@ -6,6 +6,8 @@ export async function authGuard(req: NextRequest) {
   const refreshToken = req.cookies.get("refresh_token")?.value;
   const url = req.nextUrl.clone();
 
+    console.log("guard");
+
   if (!accessToken && !refreshToken) {
     url.pathname = "/login";
     return NextResponse.redirect(url);

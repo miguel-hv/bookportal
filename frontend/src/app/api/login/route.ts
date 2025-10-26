@@ -23,8 +23,6 @@ export async function POST(req: Request) {
 
     const data = await res.json();
     const { token, refreshToken} = data;
-    console.log("token from login", token);
-    console.log("refreshtoken from login", refreshToken);
 
     // Set token in secure HttpOnly cookie
     const response = NextResponse.json({ success: true });
@@ -50,10 +48,8 @@ export async function POST(req: Request) {
     });
 
     const test = (await cookies()).get("access_token")?.value;
-    console.log("cokie", test);
     return response;
-    } catch (err) {
-    console.error("Login route error:", err);
+  } catch (err) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

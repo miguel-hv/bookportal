@@ -15,11 +15,12 @@ export async function fetchBff(path: string, options: RequestInit = {}) {
     credentials: "include"
   });
 
-  console.log("fetchbff res: ", res);
-
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `HTTP ${res.status}`);
+    console.error("bff: ", res);
+    const errBody = await res.json().catch(() => ({}));
+    const error = new Error(errBody.error || res.statusText || "Request failed");
+    (error as any).status = res.status;
+    throw error;
   }
 
   return res.json();
