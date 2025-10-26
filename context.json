@@ -1,0 +1,13 @@
+{
+    "project-context": {
+        "technologies": "nextjs frontend with nextjs backend for frontend requesting backend in java with postgre database",
+        "environments": "local (nextjs and java run in computer) and docker containers for development and production"
+    },
+    "frontend-context": {
+        "authentication": "stores jwt in httponly cookies; frontend requests to bff and bff communicates with backend"
+    },
+    "backend-context": {
+        "authentication": "jwt with refresh token",
+        "database": "postgres managed through hibernate"
+    }
+}
