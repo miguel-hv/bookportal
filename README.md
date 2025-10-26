@@ -12,8 +12,15 @@ The goal is to create a portal where users can register and post book recommenda
 
 ## Technical aspects
 
+### UX/UI
+I'm using very basic ux and ui strategies, as the goal is not learning about frontend but learning about Nextjs backend for frontend proxy and Java backend. 
+
+I'm handling error messages very lightly: no snackbars nor error pages, just the backend messages shown in the browser.
+
 ### Security
 jwt authentication with two authorization levels: user and admin.
+
+Refresh token is implementend with a guard in frontend so it redirects to login when no token is found.
 
 ### Database access
 Using Hibernate/JPA. QueryDSL can be used to mimic the LINQ deferred query representation used in C# to prevent N+1 issues. 
@@ -30,7 +37,6 @@ make prod
 ```
 The app can be run in local without containers, starting the backend in localhost:8080 and the frontend in localhost:3000
 
-## IA assistant
 Generate folder structure json with this command (Linux):
 ```
 tree -J -I 'node_modules|.next|.git' > project-structure.json
