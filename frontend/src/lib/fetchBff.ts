@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 
 const NEXT_API_BASE_URL = process.env.NEXT_API_BASE_URL;
 
@@ -16,10 +17,16 @@ export async function fetchBff(path: string, options: RequestInit = {}) {
   });
 
   if (!res.ok) {
-    console.error("bff: ", res);
     const errBody = await res.json().catch(() => ({}));
     const error = new Error(errBody.error || res.statusText || "Request failed");
     (error as any).status = res.status;
+
+    if (res.status === 401 || res.status === 403) {
+      console.warn("Session expired or unauthorized:", errBody);
+
+      redirect("/login");
+    }
+     
     throw error;
   }
 

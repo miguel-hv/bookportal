@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch (err: any) {
-    console.log("user list fetch", err);
     return NextResponse.json(
       { error: err.message || "Unauthorized" },
       { status: err.status || 401 }

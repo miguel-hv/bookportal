@@ -36,8 +36,6 @@ export async function fetchBackend(
     });
 
     if (!refreshResponse.ok) {
-      console.log("refreshResponse:", refreshResponse);
-
       const data = await refreshResponse.json();
       const backendMessage = data.message || "Unauthorized";
       return new Response(JSON.stringify({ error: backendMessage }), {
@@ -49,7 +47,6 @@ export async function fetchBackend(
     const newAccessToken = refreshData.token;
 
     if (!newAccessToken) {
-      console.log("newAccessToken");
       return new Response(JSON.stringify({ error: "No new token" }), {
         status: 401,
       });

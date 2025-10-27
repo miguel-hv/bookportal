@@ -1,6 +1,6 @@
 {
     "project-context": {
-        "technologies": "nextjs frontend with nextjs backend for frontend requesting backend in java with postgre database",
+        "technologies": "nextjs frontend using tailwind with nextjs backend for frontend requesting backend in java with postgre database",
         "environments": "local (nextjs and java run in computer) and docker containers for development and production"
     },
     "frontend-context": {
@@ -8,6 +8,6 @@
     },
     "backend-context": {
         "authentication": "jwt with refresh token",
-        "database": "postgres managed through hibernate"
+        "database": "postgres db managed through hibernate"
     }
 }
