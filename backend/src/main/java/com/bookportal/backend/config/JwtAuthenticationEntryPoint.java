@@ -1,5 +1,6 @@
 package com.bookportal.backend.config;
 
+import com.bookportal.backend.util.ErrorMessageResolver;
 import com.bookportal.backend.util.ErrorMessages;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,17 +18,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
 
-        String message = authException.getMessage();
-
-        if (message == null || message.isBlank()) {
-            message = ErrorMessages.UNAUTHORIZED.getMessage();
-        } else if (message.toLowerCase().contains("expired")) {
-            message = ErrorMessages.JWT_EXPIRED.getMessage();
-        } else if (message.toLowerCase().contains("invalid")) {
-            message = ErrorMessages.INVALID_JWT.getMessage();
-        } else {
-            message = ErrorMessages.UNAUTHORIZED.getMessage();
-        }
+        String message = ErrorMessageResolver.resolve(authException.getMessage());
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
