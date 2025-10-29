@@ -1,11 +1,13 @@
 package com.bookportal.backend.entity;
 
+import com.bookportal.backend.util.ErrorMessages;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,10 +25,11 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private Set<String> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleEntity> roles = new HashSet<>();
 
     public Long getId() { return id; }
 
@@ -38,18 +41,26 @@ public class UserEntity implements UserDetails {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public Set<String> getRoles() {
+    public Set<RoleEntity> getRoles() {
         return roles;
     }
-
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toSet());
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void validateRoles() {
+        if (roles == null || roles.isEmpty()) {
+            throw new IllegalStateException(ErrorMessages.NO_ROLES_FOUND.getMessage());
+        }
     }
 }
 

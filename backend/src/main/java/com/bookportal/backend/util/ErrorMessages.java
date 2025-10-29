@@ -9,6 +9,8 @@ public enum ErrorMessages {
     UNAUTHORIZED("Unauthorized"),
     JWT_EXPIRED("JWT expired"),
     INVALID_JWT("Invalid JWT"),
+    INVALID_ROLE("Invalid role."),
+    NO_ROLES_FOUND("User must have at least one role"),
     UNEXPECTED_ERROR("An unexpected error occurred.");
 
     private final String message;

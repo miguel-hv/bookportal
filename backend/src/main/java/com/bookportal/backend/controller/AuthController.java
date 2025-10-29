@@ -3,12 +3,15 @@ package com.bookportal.backend.controller;
 
 import com.bookportal.backend.dto.MessageResponse;
 import com.bookportal.backend.entity.RefreshTokenEntity;
+import com.bookportal.backend.entity.RoleEntity;
 import com.bookportal.backend.entity.UserEntity;
+import com.bookportal.backend.entity.enums.ERole;
 import com.bookportal.backend.exception.AuthException;
 import com.bookportal.backend.exception.ValidationException;
 import com.bookportal.backend.model.LoginRequest;
 import com.bookportal.backend.model.RegisterRequest;
 import com.bookportal.backend.repository.RefreshTokenRepository;
+import com.bookportal.backend.repository.RoleRepository;
 import com.bookportal.backend.service.RefreshTokenService;
 import com.bookportal.backend.util.ErrorMessages;
 import com.bookportal.backend.util.SuccessMessages;
@@ -21,6 +24,7 @@ import com.bookportal.backend.repository.UserRepository;
 import com.bookportal.backend.service.JwtService;
 
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,19 +38,22 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RoleRepository roleRepository;
 
     public AuthController(AuthenticationManager authenticationManager,
                           JwtService jwtService,
                           UserRepository userRepository,
                           PasswordEncoder passwordEncoder,
                           RefreshTokenService refreshTokenService,
-                          RefreshTokenRepository refreshTokenRepository) {
+                          RefreshTokenRepository refreshTokenRepository,
+                          RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.refreshTokenService = refreshTokenService;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.roleRepository = roleRepository;
     }
 
     @PostMapping("/register")
@@ -55,10 +62,35 @@ public class AuthController {
             throw new ValidationException(ErrorMessages.USERNAME_EXISTS.getMessage());
         }
 
-        var user = new UserEntity();
+        if (request.getRole() == null || request.getRole().isBlank()) {
+            throw new ValidationException(ErrorMessages.NO_ROLES_FOUND.getMessage());
+        }
+
+        String normalizedRole = request.getRole().toUpperCase();
+            normalizedRole = "ROLE_" + normalizedRole;
+
+        ERole eRole;
+        try {
+            eRole = ERole.valueOf(normalizedRole);
+        } catch (IllegalArgumentException ex) {
+            throw new ValidationException("Invalid role: " + request.getRole());
+        }
+
+        Set<RoleEntity> roles = new HashSet<>();
+        RoleEntity userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Role not found: ROLE_USER"));
+        roles.add(userRole);
+
+        if (eRole == ERole.ROLE_ADMIN) {
+            RoleEntity adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Role not found: ROLE_ADMIN"));
+            roles.add(adminRole);
+        }
+        UserEntity user = new UserEntity();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(Set.of("ROLE_USER"));
+
+        user.setRoles(roles);
 
         userRepository.save(user);
 
